@@ -1,51 +1,83 @@
-document.getElementById("uploadForm").addEventListener("submit", async function (e) {
-  e.preventDefault();
+// Wait for the entire page to load before running the script
+document.addEventListener('DOMContentLoaded', () => {
 
-  const fileInput = document.getElementById("audioFile");
-  const file = fileInput.files[0];
+    // Get references to all the necessary HTML elements
+    const uploadForm = document.getElementById('upload-form');
+    const submitButton = document.getElementById('submit-button');
+    const audioFileInput = document.getElementById('audio-file');
+    const loadingSpinner = document.getElementById('loading-spinner');
+    const resultsContainer = document.getElementById('results-container');
+    const errorMessage = document.getElementById('error-message');
+    const errorText = document.getElementById('error-text');
+    
+    const transcriptText = document.getElementById('transcript-text');
+    const contractText = document.getElementById('contract-text');
+    const pdfDownloadLink = document.getElementById('pdf-download-link');
 
-  if (!file) {
-    alert("Please select a file first.");
-    return;
-  }
+    // This is the URL of your locally running FastAPI backend
+    // IMPORTANT: Make sure the port number matches the one your server is running on.
+    const apiUrl = 'http://127.0.0.1:8001/generate_contract/';
 
-  const formData = new FormData();
-  formData.append("file", file);
+    // Listen for the form submission event
+    uploadForm.addEventListener('submit', async (event) => {
+        event.preventDefault(); // Prevent the default browser form submission
 
-  const statusDiv = document.getElementById("status");
-  const resultDiv = document.getElementById("result");
-  const transcriptEl = document.getElementById("transcript");
-  const contractEl = document.getElementById("contractText");
-  const downloadLink = document.getElementById("downloadLink");
+        const file = audioFileInput.files[0];
+        if (!file) {
+            showError('Please select an audio file first.');
+            return;
+        }
 
-  statusDiv.textContent = "Processing...";
-  resultDiv.style.display = "none";
+        // --- UI Updates: Show loading state ---
+        loadingSpinner.classList.remove('hidden');
+        resultsContainer.classList.add('hidden');
+        errorMessage.classList.add('hidden');
+        submitButton.disabled = true;
+        submitButton.textContent = 'Processing...';
 
-  try {
-    const response = await fetch("http://127.0.0.1:8000/generate_contract/", {
-      method: "POST",
-      body: formData,
+        // Create a FormData object to send the file
+        const formData = new FormData();
+        formData.append('file', file);
+
+        try {
+            // --- API Call ---
+            // Use the fetch API to send the file to your backend
+            const response = await fetch(apiUrl, {
+                method: 'POST',
+                body: formData,
+            });
+
+            const data = await response.json();
+
+            if (!response.ok) {
+                // If the server returns an error (like 4xx or 5xx)
+                throw new Error(data.error || 'An unknown error occurred.');
+            }
+
+            // --- UI Updates: Populate results ---
+            transcriptText.textContent = data.transcript;
+            contractText.textContent = data.contract_text;
+            
+            // Construct the full URL for the PDF download
+            const backendBaseUrl = 'http://127.0.0.1:8001';
+            pdfDownloadLink.href = backendBaseUrl + data.pdf_path;
+            
+            resultsContainer.classList.remove('hidden');
+
+        } catch (err) {
+            // --- UI Updates: Show error message ---
+            console.error('Fetch error:', err);
+            showError(err.message);
+        } finally {
+            // --- UI Updates: Reset form state ---
+            loadingSpinner.classList.add('hidden');
+            submitButton.disabled = false;
+            submitButton.textContent = 'Generate Contract';
+        }
     });
 
-    if (!response.ok) {
-      throw new Error("Failed to generate contract.");
+    function showError(message) {
+        errorText.textContent = message;
+        errorMessage.classList.remove('hidden');
     }
-
-    const data = await response.json();
-    console.log("✅ Backend response:", data);
-
-    transcriptEl.textContent = data.transcript;
-    contractEl.textContent = data.contract_text;
-
-    // Make sure this matches what FastAPI returns (e.g., "contracts/...")
-    downloadLink.href = `http://127.0.0.1:8000/${data.pdf_path}`;
-    downloadLink.style.display = "inline-block";
-
-    resultDiv.style.display = "block";
-    statusDiv.textContent = "✅ Contract ready!";
-
-  } catch (err) {
-    console.error("❌ Error occurred:", err);
-    statusDiv.textContent = "❌ Something went wrong.";
-  }
 });
