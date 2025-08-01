@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Voice-to-Contract Generator</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <h1>Voice to Contract Generator</h1>
+  <form id="uploadForm">
+    <input type="file" id="audioFile" accept="audio/*" required />
+    <button type="submit">Generate Contract</button>
+  </form>
+  <div id="status"></div>
+  <div id="result" style="display:none;">
+    <h2>Transcript:</h2>
+    <pre id="transcript"></pre>
+    <h2>Generated Contract:</h2>
+    <pre id="contractText"></pre>
+    <a id="downloadLink" href="#" download="contract.pdf">Download Contract PDF</a>
+  </div>
+  <script src="script.js"></script>
+</body>
+</html>
