@@ -2,7 +2,7 @@ from langchain_community.llms import Ollama
 from langchain_core.prompts import ChatPromptTemplate
 from langchain_core.runnables import Runnable
 
-MODEL = "llama3"
+MODEL = "llama3:instruct"
 OLLAMA_URL = "http://localhost:11434"
 
 llm = Ollama(model=MODEL, base_url=OLLAMA_URL)
