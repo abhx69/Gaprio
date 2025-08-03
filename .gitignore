@@ -2,6 +2,7 @@
 # Replace 'venv' with 'whisperenv' if you are using that name
 venv/
 whisperenv/
+.env/
 
 # Python cache files
 __pycache__/
@@ -26,3 +27,4 @@ contracts/
 # OS-specific files
 .DS_Store
 Thumbs.db
+.env

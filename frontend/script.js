@@ -35,13 +35,10 @@ document.addEventListener('DOMContentLoaded', () => {
         submitButton.disabled = true;
         submitButton.textContent = 'Processing...';
 
-        // Create a FormData object to send the file
         const formData = new FormData();
         formData.append('file', file);
 
         try {
-            // --- API Call ---
-            // Use the fetch API to send the file to your backend
             const response = await fetch(apiUrl, {
                 method: 'POST',
                 body: formData,
@@ -49,23 +46,27 @@ document.addEventListener('DOMContentLoaded', () => {
 
             const data = await response.json();
 
+            // --- CRITICAL DEBUGGING STEP ---
+            // This will print the exact data your browser received to the developer console.
+            console.log('Data received from backend:', data);
+
             if (!response.ok) {
-                // If the server returns an error (like 4xx or 5xx)
-                throw new Error(data.error || 'An unknown error occurred.');
+                throw new Error(data.error || 'An unknown server error occurred.');
             }
 
             // --- UI Updates: Populate results ---
-            transcriptText.textContent = data.transcript;
-            contractText.textContent = data.contract_text;
+            // Check if the keys exist before trying to display them
+            transcriptText.textContent = data.transcript || "No transcript was returned.";
+            contractText.textContent = data.contract_text || "No contract text was returned.";
             
-            // Construct the full URL for the PDF download
-            const backendBaseUrl = 'http://127.0.0.1:8001';
-            pdfDownloadLink.href = backendBaseUrl + data.pdf_path;
+            if (data.pdf_path) {
+                const backendBaseUrl = 'http://127.0.0.1:8001';
+                pdfDownloadLink.href = backendBaseUrl + data.pdf_path;
+            }
             
             resultsContainer.classList.remove('hidden');
 
         } catch (err) {
-            // --- UI Updates: Show error message ---
             console.error('Fetch error:', err);
             showError(err.message);
         } finally {
