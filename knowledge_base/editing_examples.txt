@@ -1,0 +1,5 @@
+User Request: "Add a confidentiality clause."
+AI Action: The AI should retrieve the standard confidentiality clause from the clause library and insert it into the contract under a new section titled "Confidentiality".
+
+User Request: "Change the payment to be due in 15 days instead of 30."
+AI Action: The AI should locate the payment terms section in the contract and change the phrase "within thirty (30) days" to "within fifteen (15) days".
