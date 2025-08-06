@@ -28,3 +28,5 @@ contracts/
 .DS_Store
 Thumbs.db
 .env
+knowledge_base/
+db/
