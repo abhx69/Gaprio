@@ -14,6 +14,7 @@ __pycache__/
 # These are created by the app at runtime
 audio/
 contracts/
+templates/
 
 # AI Model Caches
 # Whisper downloads large model files. This will ignore them.
