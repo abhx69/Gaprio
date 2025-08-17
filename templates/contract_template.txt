@@ -1,0 +1,72 @@
+PROFESSIONAL SERVICES AGREEMENT
+
+Contract No. [Contract Number To Be Inserted]
+
+THIS AGREEMENT is made and entered into this {{ now().strftime('%d') }} day of {{ now().strftime('%B') }}, {{ now().strftime('%Y') }}, by and between:
+
+- **The Commission:** {{ commission_name }}
+- **The Consultant:** {{ consultant_name }}
+
+[cite_start]For the project identified as: {{ project_name }} [cite: 8]
+
+**1. [cite_start]DUTIES** [cite: 9]
+
+[cite_start]A. The CONSULTANT agrees to exercise special skill to accomplish the results specified in the Scope of Services in a manner reasonably satisfactory to the COMMISSION. [cite: 9] The detailed Scope of Services is as follows:
+[cite_start]{{ scope_of_services }} [cite: 10]
+
+[cite_start]B. Key personnel designated for this Agreement are: [cite: 13]
+   - [cite_start]**Project Manager:** {{ project_manager_name }} [cite: 16]
+
+[cite_start]C. No key personnel shall be removed or replaced without the prior written consent of the COMMISSION. [cite: 17]
+
+**2. [cite_start]COMPENSATION** [cite: 24]
+
+[cite_start]In consideration for the services rendered, the COMMISSION agrees to pay the CONSULTANT as follows: [cite: 25]
+
+{% if total_payment_not_to_exceed %}
+[cite_start]A. Total payment for all services, materials, and expenses under this Agreement shall not exceed ${{ "%.2f"|format(total_payment_not_to_exceed) }}. [cite: 26]
+{% else %}
+A. Payment will be made based on time and materials at the rates set forth in the Fee Schedule (Exhibit B). [cite_start]Progress payments will be made monthly based on satisfactory services provided. [cite: 27, 32]
+{% endif %}
+
+[cite_start]B. Progress payments will be made monthly in arrears based on satisfactory services provided and actual allowable incurred costs. [cite: 32] [cite_start]Invoices must be submitted to the COMMISSION's Contract Manager. [cite: 39]
+
+**3. [cite_start]TERM** [cite: 62]
+
+[cite_start]This Agreement shall take effect on {{ now().strftime('%B %d, %Y') }} and shall end on the date of project completion, unless earlier terminated as provided herein. [cite: 62, 63]
+
+**4. [cite_start]EARLY TERMINATION** [cite: 65]
+
+[cite_start]A. The COMMISSION may terminate this Agreement for its convenience by giving the CONSULTANT a {{ termination_notice_days_by_commission }}-day written notice. [cite: 66]
+
+[cite_start]B. The CONSULTANT may terminate this Agreement by giving the COMMISSION at least {{ termination_notice_days_by_consultant }} days advance written notice. [cite: 73]
+
+**5. [cite_start]INDEPENDENT CONSULTANT STATUS** [cite: 139]
+
+[cite_start]The CONSULTANT is an independent consultant and not an employee of the COMMISSION. [cite: 139] [cite_start]The CONSULTANT is responsible for all insurance and payroll-related taxes. [cite: 140] [cite_start]The COMMISSION agrees that the CONSULTANT shall have the right to control the manner and means of accomplishing the result contracted for herein. [cite: 141]
+
+**6. [cite_start]COMPLETE AGREEMENT** [cite: 224]
+
+[cite_start]This document, including any attached exhibits, constitutes the complete and exclusive statement of the terms and conditions between the COMMISSION and the CONSULTANT, and it supersedes all prior representations and understandings. [cite: 227]
+
+[cite_start]IN WITNESS WHEREOF, the parties have executed this Agreement on the date first written above. [cite: 235]
+
+
+**THE COMMISSION:**
+
+
+________________________________________
+Signature
+
+{{ commission_name }}
+Printed Name
+
+
+**THE CONSULTANT:**
+
+
+________________________________________
+Signature
+
+[cite_start]{{ consultant_name }} [cite: 243]
+Printed Name

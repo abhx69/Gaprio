@@ -60,11 +60,16 @@ async def contract_from_audio(file: UploadFile = File(...)):
         logger.error(f"Error saving PDF: {e}")
         return {"error": "Failed to save PDF."}
 
+    # FIX 1: Get the filename from the full path
+    pdf_filename = os.path.basename(pdf_path)
+
     return {
         "message": "Contract generated successfully.",
         "transcript": transcript,
         "contract_text": contract_text,
-        "pdf_path": "contracts/contract_from_audio.pdf"
+        # FIX 2: Use the correct path ("/contracts/") and the new pdf_filename variable
+        "pdf_path": f"/contracts/{pdf_filename}"
     }
 
+# This line is correct and should remain
 app.mount("/contracts", StaticFiles(directory="contracts"), name="contracts")
